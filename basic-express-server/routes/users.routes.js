@@ -4,9 +4,9 @@ const router = express.Router();
 const controller = require('../controllers/users.controller');
 
 router
-    .get('/', controller.get)
-    .put('/:id', controller.refresh)
-    .post('/', controller.create)
+    .get('/:id', controller.get)
+    .post('/:id', controller.create)
+    .put('/:id', controller.update)
     .delete('/:id', controller.delete)
 
 module.exports = router
