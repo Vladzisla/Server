@@ -10,12 +10,12 @@ class JSONUsersService {
         }
     ]
 
-    getUser = (id) => {
+    get = (id) => {
         return this.usersList.find((el) => {
             return el.id == id
         })
     }
-    createUser = (id, name) => {
+    create = (id, name) => {
         if(this.usersList.some((el) => {return el.id == id})) {
             return {message: 'This user already exists.'}
         }
@@ -24,7 +24,7 @@ class JSONUsersService {
             return {message: 'User was created.'}
         }
     }
-    updateUser = (id, name) => {
+    update = (id, name) => {
         if(this.usersList.some((el) => {return el.id == id})){
             this.usersList.find((el) => {
                 return el.id == id
@@ -36,7 +36,7 @@ class JSONUsersService {
         }
 
     }
-    deleteUser = (id) => {
+    delete = (id) => {
         if(this.usersList.some((el) => {return el.id == id})) {
             let delElementIndex = 0;
             this.usersList.find((el, index) => {

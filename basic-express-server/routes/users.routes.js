@@ -9,4 +9,4 @@ router
     .put('/:id', controller.update)
     .delete('/:id', controller.delete)
 
-module.exports = router
+module.exports = router;

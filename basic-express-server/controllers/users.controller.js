@@ -7,22 +7,22 @@ class UsersController{
     get = (req, res) => {
         res
             .status(200)
-            .send(this.service.getUser(req.params.id))
+            .send(this.service.get(req.params.id))
     }
     create = (req, res) => {
         res
             .status(200)
-            .send(this.service.createUser(req.params.id, req.body.name))
+            .send(this.service.create(req.params.id, req.body.name))
     }
     update = (req, res) => {
         res
             .status(200)
-            .send(this.service.updateUser(req.params.id, req.body.name))
+            .send(this.service.update(req.params.id, req.body.name))
     }
     delete = (req, res) => {
         res
             .status(200)
-            .send(this.service.deleteUser(req.params.id))
+            .send(this.service.delete(req.params.id))
     }
 }
 
