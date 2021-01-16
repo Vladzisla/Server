@@ -12,15 +12,11 @@ class JSONUsersService {
             return el.id == id
         })
     }
-    create =  (id, name) => {
-        if(this.usersList.some((el) => {return el.id == id})) {
-            return {message: 'This user already exists.'}
-        }
-        else {
-            this.usersList.push({id, name});
-            this.writeToFile(this.usersList);
-            return {message: 'User was created.'}
-        }
+    create =  (user) => {
+        this.usersList.push({id: new Date(), user});
+        this.writeToFile(this.usersList);
+        return {message: 'User was created.'}
+
     }
     update = (id, name) => {
         if(this.usersList.some((el) => {return el.id == id})){

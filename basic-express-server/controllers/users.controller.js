@@ -12,12 +12,12 @@ class UsersController{
     create = (req, res) => {
         res
             .status(200)
-            .send(this.service.create(req.params.id, req.body.name))
+            .send(this.service.create(req.body))
     }
     update =  (req, res) => {
         res
             .status(200)
-            .send( this.service.update(req.params.id, req.body.name))
+            .send( this.service.update(req.params.id, req.body))
     }
     delete = (req, res) => {
         res
