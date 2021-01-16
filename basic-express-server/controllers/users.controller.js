@@ -14,10 +14,10 @@ class UsersController{
             .status(200)
             .send(this.service.create(req.params.id, req.body.name))
     }
-    update = (req, res) => {
+    update =  (req, res) => {
         res
             .status(200)
-            .send(this.service.update(req.params.id, req.body.name))
+            .send( this.service.update(req.params.id, req.body.name))
     }
     delete = (req, res) => {
         res
