@@ -4,12 +4,6 @@ class JSONUsersService {
     usersList = JSON.parse(fs.readFileSync("users.json", "ascii"))
 
     writeToFile(data){
-        // new Promise(function(resolve, reject) {
-        //     fs.writeFileSync("users.json", JSON.stringify(data), 'ascii')
-        // })
-        //     .then(() => {
-        //         return
-        //     })
         fs.writeFileSync("users.json", JSON.stringify(data), 'ascii')
     }
 
@@ -23,8 +17,8 @@ class JSONUsersService {
             return {message: 'This user already exists.'}
         }
         else {
-            this.usersList.push({id, name})
-            this.writeToFile(this.usersList)
+            this.usersList.push({id, name});
+            this.writeToFile(this.usersList);
             return {message: 'User was created.'}
         }
     }
@@ -33,7 +27,7 @@ class JSONUsersService {
             this.usersList.find((el) => {
                 return el.id == id
             }).name = name
-            this.writeToFile(this.usersList)
+            this.writeToFile(this.usersList);
             return {message: 'User was updated.'}
         }
         else {
@@ -48,8 +42,8 @@ class JSONUsersService {
                 delElementIndex = index;
                 return el.id == id
             })
-            this.usersList.splice(delElementIndex, 1)
-            this.writeToFile(this.usersList)
+            this.usersList.splice(delElementIndex, 1);
+            this.writeToFile(this.usersList);
             return {message: 'User was deleted.'}
         }
         else {
