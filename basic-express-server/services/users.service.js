@@ -12,19 +12,21 @@ class JSONUsersService {
             return el.id == id
         })
     }
-    create =  (user) => {
-        this.usersList.push({id: new Date(), ...user});
+    create =  (userBody) => {
+        this.usersList.push({id: new Date(), ...userBody});
         this.writeToFile(this.usersList);
         return {message: 'User was created.'}
 
     }
-    update = (user) => {
+    update = (id, ...userBody) => {
         if(this.usersList.some((el) => {return el.id == id})){
-            this.usersList.find((el) => {
-                return el.id == id
-            }).name = name
+
+            //this.usersList.find((el) => {return el.id == id}) = {id, ...userBody}
+            Object.assign(this.usersList.find((el) => {return el.id == id}), ...{id, ...userBody})
+
             this.writeToFile(this.usersList);
             return {message: 'User was updated.'}
+
         }
         else {
             return {message: 'User does not exist.'}
