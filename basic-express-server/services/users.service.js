@@ -37,12 +37,10 @@ class JSONUsersService {
     }
     delete = (id) => {
         if(this.usersList.some((el) => {return el.id == id})) {
-            let delElementIndex = 0;
-            this.usersList.find((el, index) => {
-                delElementIndex = index;
+            this.usersList.splice(this.usersList.findIndex((el, index) => {
                 return el.id == id
-            })
-            this.usersList.splice(delElementIndex, 1);
+            }), 1);
+
             this.writeToFile(this.usersList);
             return {message: 'User was deleted.'}
         }
