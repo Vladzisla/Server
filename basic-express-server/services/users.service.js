@@ -13,12 +13,12 @@ class JSONUsersService {
         })
     }
     create =  (user) => {
-        this.usersList.push({id: new Date(), user});
+        this.usersList.push({id: new Date(), ...user});
         this.writeToFile(this.usersList);
         return {message: 'User was created.'}
 
     }
-    update = (id, name) => {
+    update = (user) => {
         if(this.usersList.some((el) => {return el.id == id})){
             this.usersList.find((el) => {
                 return el.id == id
