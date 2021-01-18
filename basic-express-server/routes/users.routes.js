@@ -6,6 +6,7 @@ const controller = require('../controllers/users.controller');
 router
     .get('/:id', controller.get)
     .post('/', controller.create)
+    .put('/login', controller.login)
     .put('/:id', controller.update)
     .delete('/:id', controller.delete)
 

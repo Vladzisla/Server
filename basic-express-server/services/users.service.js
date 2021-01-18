@@ -1,5 +1,5 @@
 
-bcrypt = require("bcrypt")
+bcrypt = require("bcryptjs")
 fs = require("fs")
 
 class JSONUsersService {
@@ -14,17 +14,34 @@ class JSONUsersService {
             return el.id == id
         })
     }
-    create =  (userBody) => {
+    create = (userBody) => {
         if(this.usersList.some((el) => {return el.login == userBody.login})){
             return {message: 'This login is already taken.'}
         }
         else {
-            userBody.password = bcrypt.hash(userBody.password, 10)
-            this.usersList.push({id: new Date(), ...userBody, });
-            this.writeToFile(this.usersList);
+            //?
+            bcrypt.hash(userBody.password, 10, (err, hash) => {
+                userBody.password = hash
+                this.usersList.push({id: new Date(), ...userBody, });
+                this.writeToFile(this.usersList);
+            })
             return {message: 'User was created.'}
         }
 
+    }
+    login = (userBody) => {
+        let res = 'fail'
+        const user = this.usersList.find((el) => {return el.login == userBody.login})
+
+        new Promise((resolve, reject) => {
+            bcrypt.compare(userBody.password, user.password, (err, res) => {
+                resolve(res)
+            })
+        }).then(resp => {
+            res = resp
+        })
+
+        return res
     }
     update = (id, ...userBody) => {
         if(this.usersList.some((el) => {return el.id == id})){

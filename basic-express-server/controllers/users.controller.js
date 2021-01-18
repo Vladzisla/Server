@@ -14,6 +14,11 @@ class UsersController{
             .status(200)
             .send(this.service.create(req.body))
     }
+    login = (req, res) => {
+        res
+            .status(200)
+            .send(this.service.login(req.body))
+    }
     update =  (req, res) => {
         res
             .status(200)
