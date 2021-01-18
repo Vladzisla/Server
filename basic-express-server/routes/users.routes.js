@@ -8,7 +8,7 @@ router
     .get('/:id', controller.get)
     .post('/', controller.create)
     .put('/login', controller.login)
-    .put('/:id', auth, controller.update)
+    .put('/:id', auth('user'), controller.update)
 
     .delete('/:id', controller.delete)
 
