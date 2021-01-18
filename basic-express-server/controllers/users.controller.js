@@ -1,4 +1,6 @@
 const usersService = require('../services/users.service')
+const auth = require('../middlewares/auth.middleware');
+
 class UsersController{
     constructor() {
         this.get = this.get.bind(this)
@@ -17,7 +19,7 @@ class UsersController{
     login = async (req, res) => {
         res
             .status(200)
-            .send(await this.service.login(req.body))
+            .send(await this.service.login(req.body.login, req.body.password))
     }
     update =  (req, res) => {
         res

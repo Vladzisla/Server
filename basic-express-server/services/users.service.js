@@ -34,18 +34,18 @@ class JSONUsersService {
             })
         }
     }
-    login = (userBody) => {
-        if(this.usersList.some((el) => {return el.login == userBody.login})){
-            const user = this.usersList.find((el) => {return el.login == userBody.login})
+    login = (login, password) => {
+        if(this.usersList.some((el) => {return el.login == login})){
+            const user = this.usersList.find((el) => {return el.login == login})
 
             return new Promise((resolve, reject) => {
-                bcrypt.compare(userBody.password, user.password, (err, res) => {
+                bcrypt.compare(password, user.password, (err, res) => {
                     resolve(res)
                 })
             }).then(resp => {
                 if(resp){
                     const SECRET_KEY = 'secret'
-                    const token = jwt.sign({ "login": user.login }, SECRET_KEY)
+                    const token = jwt.sign({login, type:'access'}, SECRET_KEY)
                     return {token, user}
                 }
                 else {
