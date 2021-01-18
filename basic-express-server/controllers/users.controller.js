@@ -14,10 +14,10 @@ class UsersController{
             .status(200)
             .send(this.service.create(req.body))
     }
-    login = (req, res) => {
+    login = async (req, res) => {
         res
             .status(200)
-            .send(this.service.login(req.body))
+            .send(await this.service.login(req.body))
     }
     update =  (req, res) => {
         res

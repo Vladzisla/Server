@@ -33,15 +33,16 @@ class JSONUsersService {
         let res = 'fail'
         const user = this.usersList.find((el) => {return el.login == userBody.login})
 
-        new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             bcrypt.compare(userBody.password, user.password, (err, res) => {
                 resolve(res)
             })
         }).then(resp => {
             res = resp
+            return res
         })
 
-        return res
+
     }
     update = (id, ...userBody) => {
         if(this.usersList.some((el) => {return el.id == id})){
