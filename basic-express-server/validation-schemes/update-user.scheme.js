@@ -4,11 +4,9 @@ const updateUserScheme = Joi.object({
     login: Joi.string()
         .alphanum()
         .min(3)
-        .max(30)
-        .required(),
-    password: Joi.string().pattern(new RegExp('^[a-zA-Z]{3,30}$')),
-    repeat_password: Joi.ref('password')
+        .max(30),
+    // password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+    role: Joi.string()
 })
-    .with('password', 'repeat_password')
 
 module.exports = updateUserScheme;

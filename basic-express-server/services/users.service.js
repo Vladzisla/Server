@@ -62,6 +62,9 @@ class JSONUsersService {
     }
     update = (id, ...userBody) => {
         if(this.usersList.some((el) => {return el.id == id})){
+            if(this.usersList.some((el) => {return el.login == userBody[0].login})){
+                return {message: 'This login is already taken.'}
+            }
             Object.assign(this.usersList.find((el) => {return el.id == id}), ...userBody)
 
             this.writeToFile(this.usersList);
