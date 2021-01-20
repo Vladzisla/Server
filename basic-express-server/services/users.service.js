@@ -23,6 +23,7 @@ class JSONUsersService {
             return new Promise((resolve, reject) => {
                 bcrypt.hash(userBody.password, 10, (err, hash) => {
                     userBody.password = hash
+                    userBody.role = 'user'
                     this.usersList.push({id: new Date(), ...userBody, });
                     this.writeToFile(this.usersList);
                     resolve(err)
