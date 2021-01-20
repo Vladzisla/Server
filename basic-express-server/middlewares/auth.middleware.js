@@ -8,11 +8,14 @@ const auth = (role) => (req, res, next) => {
         const [, token] = req.headers['authorization'].split(' ');
         const result = jwt.verify(token, 'secret')
 
-        if(usersList.some((el) => {return el.login == result.login}) && role == usersList.find((el) => {return el.login == result.login}).role){
-            next()
+        if(!usersList.some((el) => {return el.login == result.login})){
+            throw new Error('User is not found.')
+        }
+        if(!(role == usersList.find((el) => {return el.login == result.login}).role)){
+            throw new Error('Role is incorrect for this operation.')
         }
         else {
-            throw new Error('User is not found or role is incorrect.')
+            next()
         }
     }
     catch (e) {
