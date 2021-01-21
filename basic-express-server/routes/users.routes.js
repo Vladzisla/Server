@@ -11,7 +11,7 @@ router
     .get('/:id', controller.get)
     .post('/registration',validate(createUserScheme), controller.create)
     .put('/login', controller.login)
-    .put('/:id', auth('user'),validate(updateUserScheme), controller.update)
+    .put('/:id', auth('admin'),validate(updateUserScheme), controller.update)
     .delete('/:id', controller.delete)
 
 module.exports = router;
