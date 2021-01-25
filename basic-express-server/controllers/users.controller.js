@@ -1,4 +1,4 @@
-const usersService = require('../services/users.service')
+const usersService = require('../services/users.serviceDB')
 const auth = require('../middlewares/auth.middleware');
 
 class UsersController{
