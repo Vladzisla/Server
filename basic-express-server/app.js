@@ -1,11 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const sequelize = require('./DBInit/DB.init')
-
-// const UserModule = require('./models/users.model')
-
-
 const usersRouter = require('./routes/users.routes')
+
 const app = express()
 app.use(bodyParser.json());
 app.use('/users', usersRouter)
