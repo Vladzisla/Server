@@ -1,89 +1,100 @@
 const jwt = require("jsonwebtoken");
 bcrypt = require("bcryptjs")
 const User = require('../models/users.model')
+const SECRET_KEY = 'secret'
 
 class DBUsersService {
-    usersList = User.findAll({
-        where: {login: 'qweqweas'}
-    })
 
-    get = (id) => {
-        return this.usersList.find((el) => {
-            return el.id == id
+    get = async (id) => {
+        return await User.findAll({
+            where: {
+                id: id
+            }
         })
     }
-    create = (userBody) => {
-        if(this.usersList.some((el) => {return el.login == userBody.login})){
+
+    create = async (userBody) => {
+        const user = await User.findOne({
+            where: {
+                login: userBody.login
+            }
+        })
+        if (user) {
             return {message: 'This login is already taken.'}
-        }
-        else {
-            return new Promise((resolve, reject) => {
-                bcrypt.hash(userBody.password, 10, (err, hash) => {
-                    userBody.password = hash
-                    userBody.role = 'user'
-                    this.usersList.push({id: new Date(), ...userBody, });
-                    // this.writeToFile(this.usersList);
-                    resolve(err)
-                })
-            }).then(res => {
-                if(!res){
-                    return {message: 'User was created.'}
-                }
-            })
+        } else {
+            await User.create({
+                login: userBody.login,
+                password: userBody.password
+            });
+            return {message: 'User was created.'}
         }
     }
-    login = (login, password) => {
-        if(this.usersList.some((el) => {return el.login == login})){
-            const user = this.usersList.find((el) => {return el.login == login})
 
-            return new Promise((resolve, reject) => {
-                bcrypt.compare(password, user.password, (err, res) => {
-                    resolve(res)
-                })
-            }).then(resp => {
-                if(resp){
-                    const SECRET_KEY = 'secret'
-                    const token = jwt.sign({login, type:'access'}, SECRET_KEY)
-                    return {token, user}
-                }
-                else {
-                    return {message: 'Incorrect password.'}
-                }
-                return resp
-            })
+    login = async (login, password) => {
+        const user = await User.findOne({
+            where: {
+                login: login
+            }
+        })
+
+        if (user) {
+            if (bcrypt.compareSync(password, user.password)) {
+                const token = jwt.sign({login, type: 'access'}, SECRET_KEY)
+                return {token, user}
+            } else {
+                return {message: 'Incorrect password.'}
+            }
         }
         else {
             return {message: 'User does not exist.'}
         }
-
     }
-    update = (id, ...userBody) => {
-        if(this.usersList.some((el) => {return el.id == id})){
-            if(this.usersList.some((el) => {return el.login == userBody[0].login})){
-                return {message: 'This login is already taken.'}
-            }
-            Object.assign(this.usersList.find((el) => {return el.id == id}), ...userBody)
 
-            // this.writeToFile(this.usersList);
+    update = async (id, userBody) => {
+
+        const user = await User.findOne({
+            where: {
+                id: id
+            }
+        })
+
+        if (user) {
+            try{
+                await User.update(userBody,{
+                    where:{
+                        id: id
+                    }
+                })
+            }
+            catch (e) {
+                return {message: `Value: ${e.errors[0].value}. Type: ${e.errors[0].type}`}
+            }
             return {message: 'User was updated.'}
         }
         else {
             return {message: 'User does not exist.'}
         }
-
     }
-    delete = (id) => {
-        if(this.usersList.some((el) => {return el.id == id})) {
-            this.usersList.splice(this.usersList.findIndex((el, index) => {
-                return el.id == id
-            }), 1);
 
-            // this.writeToFile(this.usersList);
-            return {message: 'User was deleted.'}
+    delete = async (id) => {
+        const user = await User.findOne({
+            where: {
+                id: id
+            }
+        })
+
+        if(user){
+            await User.destroy({
+                where: {
+                    id: id
+                }
+            })
+            return {message: 'User has been deleted.'}
         }
         else {
-                return {message: 'User does not exist.'}
+            return {message: 'User does not exist.'}
         }
     }
 }
+
 module.exports = new DBUsersService();

@@ -6,10 +6,11 @@ class UsersController{
         this.get = this.get.bind(this)
     }
     service = usersService;
-    get = (req, res) => {
+
+    get = async (req, res) => {
         res
             .status(200)
-            .send(this.service.get(req.params.id))
+            .send(await this.service.get(req.params.id))
     }
     create = async (req, res) => {
         res
@@ -21,15 +22,15 @@ class UsersController{
             .status(200)
             .send(await this.service.login(req.body.login, req.body.password))
     }
-    update =  (req, res) => {
+    update = async (req, res) => {
         res
             .status(200)
-            .send( this.service.update(req.params.id, req.body))
+            .send(await this.service.update(req.params.id, req.body))
     }
-    delete = (req, res) => {
+    delete = async (req, res) => {
         res
             .status(200)
-            .send(this.service.delete(req.params.id))
+            .send(await this.service.delete(req.params.id))
     }
 }
 
