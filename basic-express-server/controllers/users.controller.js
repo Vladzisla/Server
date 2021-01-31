@@ -24,7 +24,7 @@ class UsersController{
     update = async (req, res) => {
         res
             .status(200)
-            .send(await this.service.update(req.params.id, req.body))
+            .send(await this.service.update(req.params.id, {...req.body, file: req.file}))
     }
     delete = async (req, res) => {
         res

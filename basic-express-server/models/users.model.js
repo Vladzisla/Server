@@ -28,6 +28,10 @@ User.init({
     role: {
         type: DataTypes.ENUM('user', 'admin'),
         defaultValue: 'user'
+    },
+    filePath: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {sequelize, modelName: 'user', tableName: 'user'});
 

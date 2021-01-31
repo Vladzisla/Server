@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 bcrypt = require("bcryptjs")
 const User = require('../models/users.model')
+fs = require("fs")
 const SECRET_KEY = 'secret'
 
 class DBUsersService {
@@ -51,7 +52,7 @@ class DBUsersService {
     }
 
     update = async (id, userBody) => {
-
+        userBody.filePath = userBody.file.path
         const user = await User.findOne({
             where: {
                 id: id
@@ -67,7 +68,16 @@ class DBUsersService {
                 })
             }
             catch (e) {
-                return {message: `Value: ${e.errors[0].value}. Type: ${e.errors[0].type}`}
+                if(e.errors[0].path == 'filePath'){
+                    try{
+                        fs.unlinkSync(userBody.file.path)
+                    }
+                    catch (e) {
+                        return {message: 'Failed to save file on DB and to delete file from server'}
+                    }
+                    return {message: 'Failed to save file on DB'}
+                }
+                return {message: e.message}
             }
             return {message: 'User was updated.'}
         }

@@ -6,12 +6,13 @@ const auth = require('../middlewares/auth.middleware');
 const validate = require('../middlewares/validation.middleware');
 const createUserScheme = require('../validation-schemes/create-user.scheme');
 const updateUserScheme = require('../validation-schemes/update-user.scheme');
+const multer = require('../middlewares/multer.middleware')
 
 router
     .get('/:id', controller.get)
     .post('/registration',validate(createUserScheme), controller.create)
     .put('/login', controller.login)
-    .put('/:id', auth('user'),validate(updateUserScheme), controller.update)
+    .put('/:id', multer, controller.update)
     .delete('/:id', controller.delete)
 
 module.exports = router;
