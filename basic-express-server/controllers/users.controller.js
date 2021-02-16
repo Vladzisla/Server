@@ -5,7 +5,11 @@ class UsersController{
         this.get = this.get.bind(this)
     }
     service = usersService;
-
+    getAll = async (req, res) => {
+        res
+            .status(200)
+            .send(await this.service.getAll())
+    }
     get = async (req, res) => {
         res
             .status(200)

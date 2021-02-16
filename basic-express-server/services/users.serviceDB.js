@@ -6,6 +6,12 @@ const SECRET_KEY = 'secret'
 
 class DBUsersService {
 
+    getAll = async () => {
+        return await User.findAll({
+            attributes:['id','login','role']
+        })
+    }
+
     get = async (id) => {
         return await User.findAll({
             where: {
@@ -52,7 +58,9 @@ class DBUsersService {
     }
 
     update = async (id, userBody) => {
-        userBody.filePath = userBody.file.path
+        if(userBody.file){
+            userBody.filePath = userBody.file.path
+        }
         const user = await User.findOne({
             where: {
                 id: id
@@ -68,14 +76,20 @@ class DBUsersService {
                 })
             }
             catch (e) {
-                if(e.errors[0].path == 'filePath'){
-                    try{
-                        fs.unlinkSync(userBody.file.path)
+                console.log(e);
+                try{
+                    if(e.errors[0].path == 'filePath'){
+                        try {
+                            fs.unlinkSync(userBody.file.path)
+                        }
+                        catch (e) {
+                            return {message: 'Failed to save file on DB and to delete file from server'}
+                        }
+                        return {message: 'Failed to save file on DB'}
                     }
-                    catch (e) {
-                        return {message: 'Failed to save file on DB and to delete file from server'}
-                    }
-                    return {message: 'Failed to save file on DB'}
+                }
+                catch (e) {
+
                 }
                 return {message: e.message}
             }
